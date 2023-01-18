@@ -1,0 +1,73 @@
+##############################################################################################################################
+					Installation Issues
+##############################################################################################################################
+
+#######################################################
+Error1: ModuleNotFoundError: No module named 'requests'
+######################################################
+Soln: pip installation of requests resolved this error
+	Command: $ pip install requests
+###################################################### 
+Error2: ImportError: Please install networkx by 'pip install networkx'!
+#####################################################
+Soln: pip installation of networkx
+	Command: $ pip install networkx
+####################################################
+Error3: ModuleNotFoundError: No module named 'sklearn.ensemble.forest'
+####################################################
+Soln: pip installation of scikit-learn==0.23.2
+	Command: $ pip install -U scikit-learn==0.23.2
+####################################################
+
+###############################################################################################################################
+
+###############################################################################################################################
+				Model Implementation Steps
+##############################################################################################################################
+
+Step1: Vocabulary Creation
+
+Description: Use to extract frequent substructures. This substructure can be atom or single ring
+
+	Command: $ python src/vocabulary.py
+	
+Step2: Data Cleaning
+
+Description: Remove all the molecules from the dataset that contain substructure which is not there in the vocabulary
+
+	Command: $ python src/clean.py
+	
+Step3: Labelling of Training Data
+
+Description: Use Oracle to evaluate/annotate (label) the properties of molecules that is there in the training set. This label set is used to train the final GNN Model
+
+	Command: $ python src/labelling.py 
+	
+Step4: Training GNN Model
+
+Description: Training the Graphical Neural Network using the labelling data
+
+Command:$ python src/train.py
+     
+
+Step5: NCE Generation
+
+Description: To finally generate the new molecules
+
+Command: $ CUDA_VISIBLE_DEVICES=1 python src/run.py --oracle_name qed --generations 3000 ##################### To get 3000 Optimized Molecules in the Generated Set.
+
+
+Step6: Evaluating the Optimized Outputs
+
+Description: Evaluating and Printing the Optimized Molecules
+
+Command: $ CUDA_VISIBLE_DEVICES=1 python src/evaluate.py qed > result_new/qed_Optimized_NCEs.txt
+	 $ CUDA_VISIBLE_DEVICES=1 python src/evaluate.py sa > result_new/sa_Optimized_NCEs.txt
+	 
+Step7: PostProcessing the Generated Optimized NCEs
+
+Description: Cleaning the Optimized NCEs 
+
+Command: $ python Optimized_NCEs_PostProcessing_28June2022.py
+
+
